@@ -1,4 +1,6 @@
+
 public class LinkedStack<E> implements Stack<E> {
+	private SinglyLinkedList<E> list = new SinglyLinkedList<>();
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -6,33 +8,33 @@ public class LinkedStack<E> implements Stack<E> {
 	}
 
 	@Override
+	public String toString() {
+		return list.toString();
+	}
+
+	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return list.size();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return list.isEmpty();
 	}
 
 	@Override
 	public void push(E e) {
-		// TODO Auto-generated method stub
-		
+		list.addFirst(e);
 	}
 
 	@Override
 	public E top() {
-		// TODO Auto-generated method stub
-		return null;
+		return list.get(0);
 	}
 
 	@Override
 	public E pop() {
-		// TODO Auto-generated method stub
-		return null;
+		return list.removeFirst();
 	}
 
 }

@@ -1,10 +1,9 @@
+
 /*
  */
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.PriorityQueue;
-
 
 /**
  * An implementation of a priority queue using an array-based heap.
@@ -12,7 +11,8 @@ import java.util.PriorityQueue;
 
 public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 
-	protected ArrayList<Entry<K, V>> heap = new ArrayList<>();
+	ArrayList<Entry<K, V>> heap = new ArrayList<>();
+
 	/**
 	 * Creates an empty priority queue based on the natural ordering of its keys.
 	 */
@@ -39,41 +39,36 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 	 * @param values an array of the initial values for the priority queue
 	 */
 	public HeapPriorityQueue(K[] keys, V[] values) {
-		// TODO
+
 	}
 
 	// protected utilities
 	protected int parent(int j) {
-		// TODO
-		return -1;
+		return (j - 1) / 2;
 	}
 
 	protected int left(int j) {
-		// TODO
-		return -1;
+		return 2 * j + 1;
 	}
 
 	protected int right(int j) {
-		// TODO
-		return -1;
+		return 2 * j + 2;
 	}
 
 	protected boolean hasLeft(int j) {
-		// TODO
-		return false;
+		return left(j) < heap.size();
+
 	}
 
 	protected boolean hasRight(int j) {
-		// TODO
-		return false;
+		return right(j) < heap.size();
 	}
 
 	/** Exchanges the entries at indices i and j of the array list. */
 	protected void swap(int i, int j) {
-		Entry<K, V> temp = heap.get(i);
+		Entry<K, V> n = heap.get(i);
 		heap.set(i, heap.get(j));
-		heap.set(j, temp);
-		return;
+		heap.set(j, n);
 	}
 
 	/**
@@ -81,20 +76,38 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 	 * property.
 	 */
 	protected void upheap(int j) {
-		// TODO
+		while (j > 0) {
+			int p = parent(j);
+			if (compare(heap.get(j), heap.get(p)) >= 0)
+				break;
+			swap(j, p);
+			j = p;
+		}
 	}
 
 	/**
 	 * Moves the entry at index j lower, if necessary, to restore the heap property.
 	 */
 	protected void downheap(int j) {
-		// TODO
+		while (hasLeft(j)) {
+			int left = left(j);
+			int child = left;
+			if (hasRight(j)) {
+				int right = right(j);
+				if (compare(heap.get(left), heap.get(right)) > 0)
+					child = right;
+			}
+			if (compare(heap.get(child), heap.get(j)) >= 0)
+				break;
+			swap(j, child);
+			j = child;
+		}
 
 	}
 
 	/** Performs a bottom-up construction of the heap in linear time. */
 	protected void heapify() {
-		// TODO
+
 	}
 
 	// public methods
@@ -106,8 +119,7 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 	 */
 	@Override
 	public int size() {
-		// TODO
-		return -1;
+		return heap.size();
 	}
 
 	/**
@@ -117,7 +129,11 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 	 */
 	@Override
 	public Entry<K, V> min() {
-		return heap.get(0);
+		if (heap.isEmpty()) {
+			return null;
+		}
+		Entry<K, V> min = heap.get(0);
+		return min;
 	}
 
 	/**
@@ -130,8 +146,10 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 	 */
 	@Override
 	public Entry<K, V> insert(K key, V value) throws IllegalArgumentException {
-		// TODO
-		return null;
+		Entry<K, V> n = new PQEntry<K, V>(key, value);
+		heap.add(n);
+		upheap(heap.size() - 1);
+		return n;
 	}
 
 	/**
@@ -141,12 +159,14 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 	 */
 	@Override
 	public Entry<K, V> removeMin() {
-		// TODO
-		return null;
-	}
-	
-	public String toString() {
-		return heap.toString();
+		if (heap.isEmpty()) {
+			return null;
+		}
+		Entry<K, V> min = heap.get(0);
+		swap(0, heap.size() - 1);
+		heap.remove(heap.size() - 1);
+		downheap(0);
+		return min;
 	}
 
 	/** Used for debugging purposes only */
@@ -154,43 +174,25 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 		for (int j = 0; j < heap.size(); j++) {
 			int left = left(j);
 			int right = right(j);
-			//System.out.println("-> " +left + ", " + j + ", " + right);
-			Entry<K, V> e_left, e_right;
-			e_left = left < heap.size() ? heap.get(left) : null;
-			e_right = right < heap.size() ? heap.get(right) : null;
-			if (left < heap.size() && compare(heap.get(left), heap.get(j)) < 0) {
+			if (left < heap.size() && compare(heap.get(left), heap.get(j)) < 0)
 				System.out.println("Invalid left child relationship");
-				System.out.println("=> " + e_left + ", " + heap.get(j) + ", " + e_right);
-			}
-			if (right < heap.size() && compare(heap.get(right), heap.get(j)) < 0) {
+			if (right < heap.size() && compare(heap.get(right), heap.get(j)) < 0)
 				System.out.println("Invalid right child relationship");
-				System.out.println("=> " + e_left + ", " + heap.get(j) + ", " + e_right);
-			}
 		}
 	}
 
-	public static < T > String toBinaryTreeString(PriorityQueue<T> pq) {
-		LinkedBinaryTree<T> bt = new LinkedBinaryTree<>();
-//		bt.createLevelOrder(new ArrayList<T>(pq));
-//		BinaryTreePrinter< T > btp = new BinaryTreePrinter<>(bt);
-//		return btp.print();
+	public String toString() {
+		return heap.toString();
 	}
 
-	
-	public static void main_jdk(String [] args) {
-		//HeapPriorityQueue<Integer, Integer> pq = new HeapPriorityQueue<>();
-		PriorityQueue<Integer> pq = new PriorityQueue<>(new MaxComparator());
-		//Integer [] rands = new Integer[]{44,17,88,8,32,65,97,28,54,82,93,21,29,76,68,80};
-		Integer[] rands = new Integer[] {35,26,15,24,33,4,12,1,23,21,2,5};
-		
-		for(Integer i : rands) {
-			pq.add(i);
-			System.out.println(toBinaryTreeString(pq));
-		}
-		
-		pq.add(34);
-		System.out.println(toBinaryTreeString(pq));
+	public static void main(String[] args) {
+//		HeapPriorityQueue<Integer, Integer> pq = new HeapPriorityQueue<>();
+//		Integer[] arr = new Integer[] {35,26,15,24,33,4,12,1,23,21,2,5};
+//		for (Integer i : arr) {
+//			pq.insert(i, i);
+//		}
+//		System.out.println(pq);
+//		System.out.println(pq.removeMin());
+//		System.out.println(pq);
 	}
-
-	
 }

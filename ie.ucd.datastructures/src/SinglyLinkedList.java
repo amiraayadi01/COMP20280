@@ -1,189 +1,215 @@
-
 import java.util.Iterator;
 
-/**
- * A basic singly linked list implementation.
- */
-public class SinglyLinkedList<E> implements Cloneable, Iterable<E>, List<E> {
-    public E removeLast() {
-        return null;
-    }
-    //---------------- nested Node class ----------------
+public class SinglyLinkedList<E> implements List<E> {
 
-    /**
-     * Node of a singly linked list, which stores a reference to its
-     * element and to the subsequent node in the list (or null if this
-     * is the last node).
-     */
-    private static class Node<E> {
-        // TODO
-    } //----------- end of nested Node class -----------
+	private Node<E> head;
+	private int size;
 
-    // instance variables of the SinglyLinkedList
-    private Node<E> head = null; // head node of the list (or null if empty)
+	private class Node<E> {
+		private E element;
+		private Node<E> next;
 
-    private int size = 0; // number of nodes in the list
+		/* Constructor */
+		public Node(E e, Node<E> n) {
+			element = e;
+			next = n;
+		}
 
-    public SinglyLinkedList() {
-    }              // constructs an initially empty list
+		public E getElement() {
+			return element;
+		}
 
-    // access methods
+		public Node<E> getNext() {
+			return next;
+		}
 
-    /**
-     * Returns the number of elements in the linked list.
-     *
-     * @return number of elements in the linked list
-     */
-    public int size() {
-        return size;
-    }
+		public void setNext(Node<E> n) {
+			next = n;
+		}
+	}
 
-    /**
-     * Tests whether the linked list is empty.
-     *
-     * @return true if the linked list is empty, false otherwise
-     */
-    public boolean isEmpty() {
-        return size == 0;
-    }
+	@Override
+	public void addFirst(E e) {
+		head = new Node<E>(e, head);
+		size++;
+	}
 
-    @Override
-    public E get(int i) throws IndexOutOfBoundsException {
-        return null;
-    }
+	@Override
+	public void addLast(E e) {
+		Node<E> newest = new Node<E>(e, null);
+		Node<E> last = head;
+		if (last == null) {
+			head = newest;
+		} else {
+			while (last.getNext() != null) {
+				last = last.getNext();
+			}
+			last.setNext(newest);
+		}
+		size++;
+	}
 
-    @Override
-    public E set(int i, E e) throws IndexOutOfBoundsException {
-        return null;
-    }
+	@Override
+	public boolean isEmpty() {
+		return size == 0;
+	}
 
-    @Override
-    public void add(int i, E e) throws IndexOutOfBoundsException {
+	@Override
+	public E get(int i) {
+		Node<E> get = head;
+		for (int j = 0; j < i; j++) {
+			get = get.getNext();
+		}
+		return get.getElement();
+	}
 
-    }
+	@Override
+	public void add(int i, E e) {
+		if (i == 0)
+			addFirst(e);
+		else {
+			Node<E> addIndex = head;
+			for (int j = 0; j < i - 1; j++) {
+				addIndex = addIndex.getNext();
+			}
+			Node<E> newest = new Node<E>(e, addIndex.getNext());
+			addIndex.setNext(newest);
+			size++;
+		}
+	}
 
-    @Override
-    public E remove(int i) throws IndexOutOfBoundsException {
-        return null;
-    }
+	@Override
+	public E remove(int i) {
+		if (isEmpty())
+			return null;
+		Node<E> curr = head;
+		Node<E> remove = head;
+		if (i == 0)
+			removeFirst();
+		else {
+			for (int j = 0; j < i - 1; j++) {
+				curr = curr.next;
+			}
+			remove = curr.getNext();
+			curr.setNext(curr.getNext().getNext());
+		}
+		return remove.getElement();
+	}
 
-    /**
-     * Returns (but does not remove) the first element of the list
-     *
-     * @return element at the front of the list (or null if empty)
-     */
-    public E first() {
-        // TODO
-        return null;
-    }
+	private class ListIterator implements Iterator<E> {
+		Node<E> curr;
 
-    /**
-     * Returns the last node of the list
-     *
-     * @return last node of the list (or null if empty)
-     */
-    public Node<E> getLast() {
-        // TODO
-        return null;
-    }
+		public ListIterator() {
+			curr = head;
+		}
 
-    /**
-     * Returns (but does not remove) the last element of the list.
-     *
-     * @return element at the end of the list (or null if empty)
-     */
-    public E last() {
-        // TODO
-        return null;
-    }
+		@Override
+		public boolean hasNext() {
+			return curr != null;
+		}
 
-    // update methods
+		@Override
+		public E next() {
+			E n = curr.getElement();
+			curr = curr.getNext();
+			return n;
+		}
 
-    /**
-     * Adds an element to the front of the list.
-     *
-     * @param e the new element to add
-     */
-    public void addFirst(E e) {
-        // TODO
-    }
+	}
 
-    /**
-     * Adds an element to the end of the list.
-     *
-     * @param e the new element to add
-     */
-    public void addLast(E e) {
-        // TODO
-    }
+	@Override
+	public Iterator<E> iterator() {
+		return new ListIterator();
+	}
 
-    /**
-     * Removes and returns the first element of the list.
-     *
-     * @return the removed element (or null if empty)
-     */
-    public E removeFirst() {
-        // TODO
-        return null;
-    }
+	@Override
+	public int size() {
+		return size;
+	}
 
-    @SuppressWarnings({"unchecked"})
-    public boolean equals(Object o) {
-        // TODO
-        return false;   // if we reach this, everything matched successfully
-    }
+	@Override
+	public E removeFirst() {
+		if (head == null)
+			return null;
+		Node<E> first = head;
+		head = head.getNext();
+		size--;
+		return first.getElement();
+	}
 
-    @SuppressWarnings({"unchecked"})
-    public SinglyLinkedList<E> clone() throws CloneNotSupportedException {
-        // TODO
-        return null;
-    }
+	@Override
+	public E removeLast() {
+		if (isEmpty())
+			return null;
+		Node<E> secondLast = head;
+		Node<E> last = head;
+		while (last.getNext() != null) {
+			last = last.getNext();
+		}
+		while (secondLast.getNext().getNext() != null) {
+			secondLast = secondLast.getNext();
+		}
+		secondLast.setNext(null);
+		size--;
+		return last.getElement();
+	}
 
+	public String toString() {
+		String result = "[";
+		Node<E> current = head;
+		while (current != null) {
+			result += current.getElement();
+			if (current.getNext() != null) {
+				result += ", ";
 
-    /**
-     * Produces a string representation of the contents of the list.
-     * This exists for debugging purposes only.
-     */
-    public String toString() {
-        // TODO
-        return null;
-    }
+			}
+			current = current.getNext();
+		}
+		result += "]";
+		return result;
+	}
 
-    private class SinglyLinkedListIterator<E> implements Iterator<E> {
-        @Override
-        public boolean hasNext() {
-            // TODO
-            return false;
-        }
+	public static void main(String[] args) {
+//		String[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+//
+//		SinglyLinkedList<String> sll = new SinglyLinkedList<String>();
+//		for (String s : alphabet) {
+//			sll.addLast(s);
+//		}
+//		System.out.println(sll.toString());
+//
+//		sll.removeFirst();
+//		System.out.println(sll.toString());
+//		
+//		sll.removeLast();
+//		System.out.println(sll.toString());
+//
+//		sll.remove(0);
+//		System.out.println(sll.toString());
+//		
+//		System.out.println(sll.get(0));
+//		
+//		sll.add(0, "a");
+//		System.out.println(sll.toString());
 
-        @Override
-        public E next() {
-            // TODO
-            return null;
-        }
-    }
+//		for (String s : sll) {
+//			System.out.print(s + ", ");
+//		}
+	}
 
-    public Iterator<E> iterator() {
-        return new SinglyLinkedListIterator<E>();
-    }
+	public E first() {
+		if (isEmpty())
+			return null;
+		return head.getElement();
+	}
 
-    public static void main(String[] args) {
-        //ArrayList<String> all;
-        //LinkedList<String> ll;
-        
-        SinglyLinkedList<String> sll = new SinglyLinkedList<String>();
-
-        String[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-
-        for (String s : alphabet) {
-            sll.addFirst(s);
-            sll.addLast(s);
-        }
-        System.out.println(sll.toString());
-
-        for (String s : sll) {
-            System.out.print(s + ", ");
-        }
-    }
+	public E last() {
+		if (isEmpty())
+			return null;
+		Node<E> last = head;
+		while (last.getNext() != null) {
+			last = last.getNext();
+		}
+		return last.getElement();
+	}
 }
-

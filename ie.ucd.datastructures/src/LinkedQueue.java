@@ -1,4 +1,7 @@
+
 public class LinkedQueue<E> implements Queue<E> {
+
+	private SinglyLinkedList<E> list = new SinglyLinkedList<>();
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -7,32 +10,32 @@ public class LinkedQueue<E> implements Queue<E> {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return list.size();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return list.isEmpty();
 	}
 
 	@Override
 	public void enqueue(E e) {
-		// TODO Auto-generated method stub
-		
+		list.addLast(e);
 	}
 
 	@Override
 	public E first() {
-		// TODO Auto-generated method stub
-		return null;
+		return list.get(0);
 	}
 
 	@Override
 	public E dequeue() {
-		// TODO Auto-generated method stub
-		return null;
+		return list.removeFirst();
+	}
+
+	@Override
+	public String toString() {
+		return list.toString();
 	}
 
 }

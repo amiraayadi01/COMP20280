@@ -1,11 +1,7 @@
+
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class AVLTreeMapTest {
 
@@ -30,10 +26,8 @@ class AVLTreeMapTest {
 		for(Integer i : arr) {
 			map.put(i, Integer.toString(i));
 		}
-
-		List<Integer> keys = StreamSupport.stream(map.keySet().spliterator(), false)
-				.collect(Collectors.toList());
-		assertEquals("[1, 2, 4, 5, 12, 15, 21, 23, 24, 26, 33, 35]", keys.toString());
+		
+		assertEquals("[1, 2, 4, 5, 12, 15, 21, 23, 24, 26, 33, 35]", map.keySet().toString());
 	}
 
 	@Test
@@ -131,10 +125,10 @@ class AVLTreeMapTest {
 		assertEquals(12, map.higherEntry(11).getKey());
 	}
 
-	@Test
-	void testEntrySet() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testEntrySet() {
+//		fail("Not yet implemented");
+//	}
 
 	@Test
 	void testToString() {
@@ -145,19 +139,21 @@ class AVLTreeMapTest {
 		for(Integer i : arr) {
 			map.put(i, Integer.toString(i));
 		}
-		assertEquals("[null, 1, null, 2, null, 4, null, 5, null, 12, null, 15, null, 21, null, 23, null, 24, null, 26, null, 33, null, 35, null]", map.toString());
+		assertEquals("[null, <1, 1>, null, <2, 2>, null, <4, 4>, null, <5, 5>, null, <12, 12>, null, <15, 15>, null, <21, 21>, null, <23, 23>, null, <24, 24>, null, <26, 26>, null, <33, 33>, null, <35, 35>, null]", map.toString());
 	}
 
 	@Test
 	void testSubMap() {
 		AVLTreeMap<Integer, String> map = new AVLTreeMap<>();
+		//java.util.TreeMap<Integer, String> map = new java.util.TreeMap<>();
 		Integer[] arr = new Integer[] {35,26,15,24,33,4,12,1,23,21,2,5};
 
 		for(Integer i : arr) {
 			map.put(i, Integer.toString(i));
 		}
 				
-		//assertEquals("[12, 15, 21, 23, 24, 26, 33]",map.subMap(12, 34).keySet().toString());
+		//assertEquals("[12, 15, 21, 23, 24, 26, 33]", map.subMap(12, 34).keySet().toString());	
+		assertEquals("[<12, 12>, <15, 15>, <21, 21>, <23, 23>, <24, 24>, <26, 26>, <33, 33>]", map.subMap(12, 34).toString());	
 	}
 
 }
