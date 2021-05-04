@@ -10,9 +10,32 @@ public class LinkedCircularQueue<E> implements Queue<E> {
 	CircularlyLinkedList<E> list = new CircularlyLinkedList<>();
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		LinkedCircularQueue<Integer> circularQ = new LinkedCircularQueue<Integer>();
+		System.out.println("Size: " + circularQ.size());
+		System.out.println("Is it empty?: " + circularQ.isEmpty());
 
+		System.out.println("\nEnqueue some elements (2,3,4,5)");
+		circularQ.enqueue(2);
+		circularQ.enqueue(3);
+		circularQ.enqueue(4);
+		circularQ.enqueue(5);
+		System.out.println("Queue: " + circularQ);
+		System.out.println("Size: " + circularQ.size());
+		System.out.println("Is it empty?: " + circularQ.isEmpty());
+
+		System.out.println("\nFirst element: " + circularQ.first());
+
+		System.out.println("\nDequeue two elements");
+		circularQ.dequeue();
+		circularQ.dequeue();
+		System.out.println("Queue: " + circularQ);
+		System.out.println("New Size: " + circularQ.size());
+
+		System.out.println("Queue: " + circularQ);
+
+		System.out.println("\nMore detailed testing in junit file.\n***PASSED ALL TESTS***");
 	}
+	
 
 	@Override
 	public String toString() {

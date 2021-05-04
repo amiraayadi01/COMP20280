@@ -178,6 +178,24 @@ public class DoublyLinkedList<E> implements List<E> {
 		size++;
 	}
 
+	public E first() {
+		if (isEmpty())
+			return null;
+		return head.getElement();
+	}
+
+	public E last() {
+		if (isEmpty())
+			return null;
+		Node<E> last = head;
+		while (last.getNext() != null) {
+			last = last.getNext();
+		}
+		return last.getElement();
+	}
+
+}
+
 	public String toString() {
 		String result = "[";
 		Node<E> current = head;
@@ -218,20 +236,3 @@ public class DoublyLinkedList<E> implements List<E> {
 //           }
 	}
 
-	public E first() {
-		if (isEmpty())
-			return null;
-		return head.getElement();
-	}
-
-	public E last() {
-		if (isEmpty())
-			return null;
-		Node<E> last = head;
-		while (last.getNext() != null) {
-			last = last.getNext();
-		}
-		return last.getElement();
-	}
-
-}

@@ -39,7 +39,19 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 	 * @param values an array of the initial values for the priority queue
 	 */
 	public HeapPriorityQueue(K[] keys, V[] values) {
+        super();
 
+        if (keys.length < values.length) {
+            for (int i = 0; i < keys.length; i++) {
+                heap.add(new PQEntry<>(keys[i], values[i]));
+            }
+            heapify();
+        } else {
+            for (int i = 0; i < values.length; i++) {
+                heap.add(new PQEntry<>(keys[i], values[i]));
+            }
+            heapify();
+        }
 	}
 
 	// protected utilities
@@ -182,8 +194,17 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 	}
 
 	public String toString() {
-		return heap.toString();
-	}
+        String ret = "[";
+        for(Entry<K,V> x : heap) {
+            ret += x.getValue() + ", ";
+        }
+
+        ret = ret.substring(0, ret.length()-2);
+        ret += "]";
+
+        return ret;
+    }
+	
 
 	public static void main(String[] args) {
 //		HeapPriorityQueue<Integer, Integer> pq = new HeapPriorityQueue<>();

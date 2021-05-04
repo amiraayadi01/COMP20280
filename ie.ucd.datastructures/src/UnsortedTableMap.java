@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import javax.swing.text.TabExpander;
+
 /**
  * An implementation of a map using an unsorted table.
  */
@@ -17,8 +19,10 @@ public class UnsortedTableMap<K, V> extends AbstractMap<K, V> {
 	// private utility
 	/** Returns the index of an entry with equal key, or -1 if none found. */
 	private int findIndex(K key) {
-		// TODO
-
+		for (int i = 0; i < table.size(); i++) {
+			if (table.get(i).getKey().equals(key))
+				return i;
+		}
 		return -1;
 	}
 
@@ -42,8 +46,9 @@ public class UnsortedTableMap<K, V> extends AbstractMap<K, V> {
 	 */
 	@Override
 	public V get(K key) {
-		// TODO
-		return null;
+		if (findIndex(key) == -1)
+			return null;
+		return table.get(findIndex(key)).getValue();
 	}
 
 	/**
@@ -58,8 +63,11 @@ public class UnsortedTableMap<K, V> extends AbstractMap<K, V> {
 	 */
 	@Override
 	public V put(K key, V value) {
-		// TODO
-		return null;
+		if (findIndex(key) == -1) {
+			table.add(new MapEntry<>(key, value));
+			return null;
+		} else
+			return table.get(findIndex(key)).setValue(value);
 	}
 
 	/**
@@ -72,8 +80,14 @@ public class UnsortedTableMap<K, V> extends AbstractMap<K, V> {
 	 */
 	@Override
 	public V remove(K key) {
-		// TODO
-		return null;
+		if (findIndex(key) == -1)
+			return null;
+		V remove = table.get(findIndex(key)).getValue();
+		if (findIndex(key) != size() - 1)
+			table.set(findIndex(key), table.get(size() - 1));
+		table.remove(size() - 1);
+		return remove;
+
 	}
 
 	// ---------------- nested EntryIterator class ----------------
@@ -81,13 +95,13 @@ public class UnsortedTableMap<K, V> extends AbstractMap<K, V> {
 		private int j = 0;
 
 		public boolean hasNext() {
-			// TODO
-			return false;
+			return j < table.size();
 		}
 
 		public Entry<K, V> next() {
-			// TODO
-			return null;
+			if (j == table.size())
+				throw new NoSuchElementException("No further entries");
+			return table.get(j++);
 		}
 
 		public void remove() {
@@ -110,9 +124,5 @@ public class UnsortedTableMap<K, V> extends AbstractMap<K, V> {
 	@Override
 	public Iterable<Entry<K, V>> entrySet() {
 		return new EntryIterable();
-	}
-	
-	public String toString() {
-		return table.toString();
 	}
 }

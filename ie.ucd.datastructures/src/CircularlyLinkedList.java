@@ -1,143 +1,183 @@
 import java.util.Iterator;
 
+
 public class CircularlyLinkedList<E> implements List<E> {
-    //---------------- nested Node class ----------------
-    /**
-     * Singly linked node, which stores a reference to its element and
-     * to the subsequent node in the list.
-     */
-    private static class Node<E> {
-        // TODO
-    } //----------- end of nested Node class -----------
+	
+	private Node<E> tail;
+	private int size;
 
-    // instance variables of the CircularlyLinkedList
-    /** The designated cursor of the list */
-    private Node<E> tail = null;                  // we store tail (but not head)
+	private class Node<E> {
+		private E element;
+		private Node<E> next;
+		
+		/* Constructor */
+		public Node(E e, Node<E> n) {
+			element = e;
+			next = n;
+		}
+		
+		public E getElement() {
+			return element;
+		}
+		public Node<E> getNext() {
+			return next;
+		}
+		
+		public void setNext(Node<E> n) {
+			next = n;
+		}
+	}
 
-    /** Number of nodes in the list */
-    private int size = 0;                         // number of nodes in the list
+	@Override
+	public int size() {
+		return size;
+	}
 
-    /** Constructs an initially empty list. */
-    public CircularlyLinkedList() { }             // constructs an initially empty list
+	@Override
+	public boolean isEmpty() {
+		return size==0;
+	}
 
-    // access methods
-    /**
-     * Returns the number of elements in the linked list.
-     * @return number of elements in the linked list
-     */
-    public int size() { return size; }
+	@Override
+	public E get(int i) {
+		Node<E> get=tail.getNext();
+		for (int j = 0; j < i; j++) {
+			get=get.getNext();
+		}
+		return get.getElement();
+	}
 
-    /**
-     * Tests whether the linked list is empty.
-     * @return true if the linked list is empty, false otherwise
-     */
-    public boolean isEmpty() { return size == 0; }
+	@Override
+	public void add(int i, E e) {
+		if (i==0)
+			addFirst(e);
+		else {
+			Node<E> addIndex = tail.getNext();
+			for (int j = 0; j < i-1; j++) {
+				addIndex=addIndex.getNext();
+			}
+			Node<E> newest = new Node<E>(e,addIndex.getNext());
+			addIndex.setNext(newest);
+			size++;
+		}
+	}
 
-    @Override
-    public E get(int i) throws IndexOutOfBoundsException {
-        return null;
-    }
+	@Override
+	public E remove(int i) {
+		Node<E> curr=tail.getNext();
+		Node<E> remove=null;
+		if(i==0) 
+			first();
+		else {
+			for (int j = 0; j < i-1; j++) {
+				curr=curr.next;
+			}
+			remove=curr.getNext();
+			curr.setNext(curr.getNext().getNext());
+		}
+		size--;
+		return remove.getElement();
+	}
+	@Override
+	    public Iterator<E> iterator() {
+	        return null;
+	    }
 
-    @Override
-    public E set(int i, E e) throws IndexOutOfBoundsException {
-        return null;
-    }
+	@Override
+	public E removeFirst() {
+		if(isEmpty())
+			return null;
+		Node<E> first= tail.getNext();
+		if(first==tail)
+			tail=null;
+		else
+			tail.setNext(first.getNext());
+		size--;
+		return first.getElement();
+	}
 
-    @Override
-    public void add(int i, E e) throws IndexOutOfBoundsException {
+	@Override
+	public E removeLast() {
+		if(isEmpty())
+			return null;
+		Node<E> secondLast = tail.getNext();
+		for (int i = 1; i < size-1; i++) {
+			secondLast=secondLast.getNext();
+		}
+		secondLast.setNext(tail.getNext());
+		size--;
+		return tail.getElement();
+	}
+	
 
-    }
+	public void rotate() {
+		if(tail !=null) {
+			tail = tail.getNext();
+		}
+	}
 
-    @Override
-    public E remove(int i) throws IndexOutOfBoundsException {
-        return null;
-    }
+	@Override
+	public void addFirst(E e) {
+		if(isEmpty()) {
+			tail = new Node<E>(e,null);
+			tail.setNext(tail);
+		}
+		else {
+			Node<E> newest = new Node<E>(e,tail.getNext());
+			tail.setNext(newest);
+		}
+		size++;
+	}
 
-    @Override
-    public Iterator<E> iterator() {
-        return null;
-    }
+	@Override
+	public void addLast(E e) {
+		addFirst(e);
+		tail = tail.getNext();
+	}
 
-    /**
-     * Returns (but does not remove) the first element of the list
-     * @return element at the front of the list (or null if empty)
-     */
-    public E first() {             // returns (but does not remove) the first element
-        // TODO
-        return null;
-    }
+	
+	public String toString() {
+		String result = "";
+        Node<E> current = tail.getNext(); //first node is the next node after the tail
+        for (int i = 0; i < size; i++) {
+        	result += current.getElement();
+        	if(i+1<size) {
+            	result += ",";
+            	
+            }
+            current = current.getNext();
+			
+		}
+        return result;
+	}
+	
+	public static void main(String[] args) {
+		CircularlyLinkedList<Integer> ll = new CircularlyLinkedList<Integer>();
+		for(int i = 10; i < 20; ++i) {
+			ll.addLast(i);
+		}
 
-    /**
-     * Returns (but does not remove) the last element of the list
-     * @return element at the back of the list (or null if empty)
-     */
-    public E last() {              // returns (but does not remove) the last element
-        // TODO
-        return null;
-    }
+		System.out.println(ll);
 
-    // update methods
-    /**
-     * Rotate the first element to the back of the list.
-     */
-    public void rotate() {         // rotate the first element to the back of the list
-        // TODO
-    }
+		ll.add(1, 99);;
+		System.out.println(ll);
 
-    /**
-     * Adds an element to the front of the list.
-     * @param e  the new element to add
-     */
-    public void addFirst(E e) {                // adds element e to the front of the list
-        // TODO
-    }
+		ll.last();
 
-    /**
-     * Adds an element to the end of the list.
-     * @param e  the new element to add
-     */
-    public void addLast(E e) {                 // adds element e to the end of the list
-        // TODO
-    }
+		ll.rotate();
+		System.out.println(ll.get(1));
 
-    /**
-     * Removes and returns the first element of the list.
-     * @return the removed element (or null if empty)
-     */
-    public E removeFirst() {                   // removes and returns the first element
-        // TODO
-        return null;
-    }
+		ll.first();
+		ll.rotate();
+		System.out.println(ll);
 
-    /**
-     * Produces a string representation of the contents of the list.
-     * This exists for debugging purposes only.
-     */
-    public String toString() {
-        // TODO
-        return null;
-    }
+		ll.last();
+		ll.rotate();
+		System.out.println(ll);
 
+//		for (Integer e : ll) {
+//			System.out.println("value: " + e);
+//		}
 
-    public static void main(String [] args) {
-        //ArrayList<String> all;
-        //LinkedList<String> ll;
-        CircularlyLinkedList<String> ll = new CircularlyLinkedList<>();
-
-        String[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-
-        for (String s : alphabet) {
-            ll.addFirst(s);
-            ll.addLast(s);
-        }
-        System.out.println(ll.toString());
-
-        ll.rotate();
-        ll.rotate();
-
-        for (String s : ll) {
-            System.out.print(s + ", ");
-        }
-
-    }
+	}
 }

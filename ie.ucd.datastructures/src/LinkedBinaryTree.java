@@ -246,7 +246,44 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	 * @throws IllegalArgumentException if p is not a leaf
 	 */
 	public void attach(Position<E> p, LinkedBinaryTree<E> t1, LinkedBinaryTree<E> t2) throws IllegalArgumentException {
-		// TODO
+        // make new valid node
+        Node<E> x = validate(p);
+
+        // if p isn't a leaf, throw exception
+        if (isInternal(p)) {
+            throw new IllegalArgumentException("p isn't a leaf");
+        }
+
+        // size incremenets by the size of the new trees
+        size += t1.size() + t2.size();
+
+        // if tree 1 isn't empty
+        if (!t1.isEmpty()) {
+            // set t1's root's parent to new node
+            t1.root.setParent(x);
+
+            // set x root left to t1
+            x.setLeft(t1.root);
+
+            // t1.root is null
+            t1.root = null;
+
+            // size of t1 is 0
+            t1.size = 0;
+        }
+        if (!t2.isEmpty()) {
+            // set t2 new parent
+            t2.root.setParent(x);
+
+            // set x root right to t2 root
+            x.setRight(t2.root);
+
+            // t2 root is null
+            t2.root = null;
+
+            // t2 size is 0
+            t2.size = 0;
+        }
 	}
 
 	/**

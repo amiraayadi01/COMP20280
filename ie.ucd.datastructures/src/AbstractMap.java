@@ -6,7 +6,7 @@ import java.util.Iterator;
  * The base class provides three means of support: 1) It provides an isEmpty
  * implementation based upon the abstract size() method. 2) It defines a
  * protected MapEntry class as a concrete implementation of the entry interface
- * 3) It provides implemenations of the keySet and values methods, based upon
+ * 3) It provides implementations of the keySet and values methods, based upon
  * use of a presumed implementation of the entrySet method.
  *
  */
@@ -58,8 +58,7 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 
 		/** Returns string representation (for debugging only) */
 		public String toString() {
-			//return "<" + k + ", " + v + ">";
-			return "" + k;
+			return "<" + k + ", " + v + ">";
 		}
 
 	} // ----------- end of nested MapEntry class -----------
@@ -88,6 +87,19 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 	private class KeyIterable implements Iterable<K> {
 		public Iterator<K> iterator() {
 			return new KeyIterator();
+		}
+
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append("[");
+
+			for (K p : keySet()) {
+				sb.append(p);
+				sb.append(", ");
+			}
+			sb.append("]");
+
+			return sb.toString().replace(", ]", "]");
 		}
 	} // ----------- end of nested KeyIterable class -----------
 

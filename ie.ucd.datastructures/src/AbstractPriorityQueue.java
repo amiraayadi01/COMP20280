@@ -1,3 +1,4 @@
+
 import java.util.Comparator;
 
 /**
@@ -34,9 +35,9 @@ public abstract class AbstractPriorityQueue<K,V> implements PriorityQueue<K,V> {
     // utilities not exposed as part of the Entry interface
     protected void setKey(K key) { k = key; }
     protected void setValue(V value) { v = value; }
+    
     public String toString() {
-    	//return "<" + k + ", " + v + ">";
-    	return "" + k;
+  	  return ""+k;
     }
   } //----------- end of nested PQEntry class -----------
 
@@ -66,6 +67,7 @@ public abstract class AbstractPriorityQueue<K,V> implements PriorityQueue<K,V> {
       throw new IllegalArgumentException("Incompatible key");
     }
   }
+ 
 
   /**
    * Tests whether the priority queue is empty.

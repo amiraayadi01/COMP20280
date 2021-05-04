@@ -25,6 +25,28 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
 		super(cap, p);
 	}
 
+    public static void main(String[] args) {
+        //HashMap<Integer, String> m = new HashMap<Integer, String>();
+        ChainHashMap<Integer, String> m = new ChainHashMap<Integer, String>();
+
+        m.put(1, "One");
+        m.put(10, "Ten");
+        m.put(11, "Eleven");
+        m.put(20, "Twenty");
+
+        System.out.println("m: " + m);
+
+        m.remove(11);
+        System.out.println("m: " + m);
+
+//		ChainHashMap<String, Integer> counter = new ()//;
+//		// Scanner from file
+//		for(String word : scanner) {
+//			Integer old_count = counter.get(word);
+//			counter.put(old_count + 1);
+//		}
+    }
+
 	/** Creates an empty table having length equal to current capacity. */
 	@Override
 	@SuppressWarnings({ "unchecked" })
