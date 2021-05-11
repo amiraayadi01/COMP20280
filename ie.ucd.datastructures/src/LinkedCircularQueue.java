@@ -35,12 +35,6 @@ public class LinkedCircularQueue<E> implements Queue<E> {
 
 		System.out.println("\nMore detailed testing in junit file.\n***PASSED ALL TESTS***");
 	}
-	
-
-	@Override
-	public String toString() {
-		return list.toString();
-	}
 
 	@Override
 	public int size() {
