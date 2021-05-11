@@ -127,4 +127,8 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
 				}
 		return iter;
 	}
+	
+	public String toString() {
+        return entrySet().toString();
+    }
 }
