@@ -1,20 +1,35 @@
 public class ArrayStack<E> implements Stack<E> {
+	
+	public static void main(String[] args) {
+		
+		ArrayStack<Integer> arrayStack = new ArrayStack<>(21);
 
-	public static final int CAPACITY = 100; // default array capacity
-	private E[] data; // generic array for storage
-	private int t = -1; // index of the top element of the stack
+		System.out.println("Is it empty? " + arrayStack.isEmpty());
+		System.out.println("Push some elements (21,22,23)");
+		arrayStack.push(21);
+		arrayStack.push(22);
+		arrayStack.push(23);
+		System.out.println("Stack: " + arrayStack);
+		System.out.println("Is it empty? " + arrayStack.isEmpty());
+		System.out.println("Size: " + arrayStack.size());
+		System.out.println("Element at top: " + arrayStack.top());
 
-	// constructs stack with default capacity
-	public ArrayStack() {
-		this(CAPACITY);
+		System.out.println("Peek: " + arrayStack.peek());
+
+		System.out.print("Pop twice\nElement at top:");
+		arrayStack.pop();
+		arrayStack.pop();
+		System.out.println(arrayStack.top());
+		System.out.println("Size (Should be 1): " + arrayStack.size());
+
+		System.out.println("\nMore detailed testing in junit file.\n***PASSED ALL TESTS***");
+
 	}
 
-	// constructor with specified capacity
-	@SuppressWarnings("unchecked")
-	public ArrayStack(int capacity) {
-		data = (E[]) new Object[capacity];
-	}
-
+	public static final int CAPACITY = 100; 
+	private E[] data; 
+	private int t = -1; 
+	
 	@Override
 	public int size() {
 		return (t + 1);
@@ -60,46 +75,5 @@ public class ArrayStack<E> implements Stack<E> {
 			E x = data[t];
 			return x;
 		}
-	}
-	
-	@Override
-	public String toString() {
-		if (isEmpty()) {
-			return "[]";
-		}
-		String newString = "[" + data[size()-1];
-
-		for (int i = size()-2; i >= 0; i--) {
-			newString = newString + ", " + data[i];
-		}
-
-		return newString + "]";
-	}
-
-	// main
-	public static void main(String[] args) {
-		// Create a stack of capacity 21
-		ArrayStack<Integer> arrayStack = new ArrayStack<>(21);
-
-		System.out.println("Is it empty? " + arrayStack.isEmpty());
-		System.out.println("Push some elements (21,22,23)");
-		arrayStack.push(21);
-		arrayStack.push(22);
-		arrayStack.push(23);
-		System.out.println("Stack: " + arrayStack);
-		System.out.println("Is it empty? " + arrayStack.isEmpty());
-		System.out.println("Size: " + arrayStack.size());
-		System.out.println("Element at top: " + arrayStack.top());
-
-		System.out.println("Peek: " + arrayStack.peek());
-
-		System.out.print("Pop twice\nElement at top:");
-		arrayStack.pop();
-		arrayStack.pop();
-		System.out.println(arrayStack.top());
-		System.out.println("Size (Should be 1): " + arrayStack.size());
-
-		System.out.println("\nMore detailed testing in junit file.\n***PASSED ALL TESTS***");
-
 	}
 }
