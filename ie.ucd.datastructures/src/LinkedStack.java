@@ -23,11 +23,6 @@ public class LinkedStack<E> implements Stack<E> {
 	}
 
 	@Override
-	public String toString() {
-		return list.toString();
-	}
-
-	@Override
 	public int size() {
 		return list.size();
 	}
