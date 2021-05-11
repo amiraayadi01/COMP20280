@@ -21,8 +21,9 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @throws IllegalArgumentException if p is not a valid Position for this tree.
    */
   @Override
-  public boolean isInternal(Position<E> p) { return numChildren(p) > 0; }
-
+  public boolean isInternal(Position<E> p) { 
+    return numChildren(p) > 0; 
+  }
   /**
    * Returns true if Position p does not have any children.
    *
@@ -31,7 +32,9 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @throws IllegalArgumentException if p is not a valid Position for this tree.
    */
   @Override
-  public boolean isExternal(Position<E> p) { return numChildren(p) == 0; }
+  public boolean isExternal(Position<E> p) { 
+    return numChildren(p) == 0;
+  }
 
   /**
    * Returns true if Position p represents the root of the tree.
@@ -40,7 +43,9 @@ public abstract class AbstractTree<E> implements Tree<E> {
    * @return true if p is the root of the tree, false otherwise
    */
   @Override
-  public boolean isRoot(Position<E> p) { return p == root(); }
+  public boolean isRoot(Position<E> p) { 
+    return p == root(); 
+  }
 
   /**
    * Returns the number of children of Position p.
@@ -114,15 +119,6 @@ public abstract class AbstractTree<E> implements Tree<E> {
   }
 
   //---------- support for various iterations of a tree ----------
-
-  //---------------- nested ElementIterator class ----------------
-  /* This class adapts the iteration produced by positions() to return elements. */
-  private class ElementIterator implements Iterator<E> {
-    Iterator<Position<E>> posIterator = positions().iterator();
-    public boolean hasNext() { return posIterator.hasNext(); }
-    public E next() { return posIterator.next().getElement(); } // return element!
-    public void remove() { posIterator.remove(); }
-  }
 
   /**
    * Returns an iterator of the elements stored in the tree.
@@ -202,4 +198,21 @@ public abstract class AbstractTree<E> implements Tree<E> {
     }
     return snapshot;
   }
+      //---------------- nested ElementIterator class ----------------
+    /* This class adapts the iteration produced by positions() to return elements. */
+    private class ElementIterator implements Iterator<E> {
+        Iterator<Position<E>> posIterator = positions().iterator();
+
+        public boolean hasNext() {
+            return posIterator.hasNext();
+        }
+
+        public E next() {
+            return posIterator.next().getElement();
+        } // return element!
+
+        public void remove() {
+            posIterator.remove();
+        }
+    }
 }
