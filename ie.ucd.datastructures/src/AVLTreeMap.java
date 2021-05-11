@@ -102,23 +102,11 @@ public class AVLTreeMap<K, V> extends TreeMap<K, V> {
 		return true;
 	}
 
-	/*
-	 * public String toBinaryTreeString() { BinaryTreePrinter< Entry<K, V> > btp =
-	 * new BinaryTreePrinter<>( (LinkedBinaryTree<Entry<K, V>>) this.tree); return
-	 * btp.print(); }
-	 */
 
-	public static void main(String[] args) {
-//		AVLTreeMap<Integer, Integer> avl = new AVLTreeMap<>();
-//		Integer[] arr = new Integer[] { 44, 17, 88, 8, 32, 65, 97, 28, 54, 82, 93, 21, 29, 76, 80 };
-//		for (Integer i : arr) {
-//			avl.put(i, i);
-//		}
-//
-//		System.out.println("avl: " + avl);
-//
-//		avl.remove(arr[0]);
-//
-//		System.out.println("avl: " + avl);
-	}
+	 public String toBinaryTreeString() { BinaryTreePrinter< Entry<K, V> > btp =
+	 // new BinaryTreePrinter<>( (LinkedBinaryTree<Entry<K, V>>) this.tree); return
+	 //btp.print(); }
+	 return null;
+
+
 }
