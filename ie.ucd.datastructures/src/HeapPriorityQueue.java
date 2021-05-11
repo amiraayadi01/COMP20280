@@ -180,25 +180,12 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 		downheap(0);
 		return min;
 	}
-
-	/** Used for debugging purposes only */
-	private void sanityCheck() {
-		for (int j = 0; j < heap.size(); j++) {
-			int left = left(j);
-			int right = right(j);
-			if (left < heap.size() && compare(heap.get(left), heap.get(j)) < 0)
-				System.out.println("Invalid left child relationship");
-			if (right < heap.size() && compare(heap.get(right), heap.get(j)) < 0)
-				System.out.println("Invalid right child relationship");
-		}
-	}
-
+		
 	public String toString() {
         String ret = "[";
         for(Entry<K,V> x : heap) {
             ret += x.getValue() + ", ";
         }
-
         ret = ret.substring(0, ret.length()-2);
         ret += "]";
 
@@ -206,14 +193,47 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
     }
 	
 
-	public static void main(String[] args) {
-//		HeapPriorityQueue<Integer, Integer> pq = new HeapPriorityQueue<>();
-//		Integer[] arr = new Integer[] {35,26,15,24,33,4,12,1,23,21,2,5};
-//		for (Integer i : arr) {
-//			pq.insert(i, i);
-//		}
-//		System.out.println(pq);
-//		System.out.println(pq.removeMin());
-//		System.out.println(pq);
+/** Used for debugging purposes only */
+	private void sanityCheck() {
+		for (int j = 0; j < heap.size(); j++) {
+			int left = left(j);
+			int right = right(j);
+			//System.out.println("-> " +left + ", " + j + ", " + right);
+			Entry<K, V> e_left, e_right;
+			e_left = left < heap.size() ? heap.get(left) : null;
+			e_right = right < heap.size() ? heap.get(right) : null;
+			if (left < heap.size() && compare(heap.get(left), heap.get(j)) < 0) {
+				System.out.println("Invalid left child relationship");
+				System.out.println("=> " + e_left + ", " + heap.get(j) + ", " + e_right);
+			}
+			if (right < heap.size() && compare(heap.get(right), heap.get(j)) < 0) {
+				System.out.println("Invalid right child relationship");
+				System.out.println("=> " + e_left + ", " + heap.get(j) + ", " + e_right);
+			}
+		}
 	}
+
+	public static < T > String toBinaryTreeString(PriorityQueue<T> pq) {
+		LinkedBinaryTree<T> bt = new LinkedBinaryTree<>();
+//		bt.createLevelOrder(new ArrayList<T>(pq));
+//		BinaryTreePrinter< T > btp = new BinaryTreePrinter<>(bt);
+//		return btp.print();
+	}
+
+
+	public static void main_jdk(String [] args) {
+		//HeapPriorityQueue<Integer, Integer> pq = new HeapPriorityQueue<>();
+		PriorityQueue<Integer> pq = new PriorityQueue<>(new MaxComparator());
+		//Integer [] rands = new Integer[]{44,17,88,8,32,65,97,28,54,82,93,21,29,76,68,80};
+		Integer[] rands = new Integer[] {35,26,15,24,33,4,12,1,23,21,2,5};
+		
+		for(Integer i : rands) {
+			pq.add(i);
+			System.out.println(toBinaryTreeString(pq));
+		}
+		
+		pq.add(34);
+		System.out.println(toBinaryTreeString(pq));
+	}
+
 }
