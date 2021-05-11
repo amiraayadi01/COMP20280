@@ -1,238 +1,213 @@
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.Iterator;
 
 public class DoublyLinkedList<E> implements List<E> {
 
-	private Node<E> head;
-	private int size;
+    //---------------- nested Node class ----------------
+    /**
+     * Node of a doubly linked list, which stores a reference to its
+     * element and to both the previous and next node in the list.
+     */
+    private static class Node<E> {
+        // TODO
+    } //----------- end of nested Node class -----------
 
-	private class Node<E> {
-		private E element;
-		private Node<E> next;
-		private Node<E> prev;
+    // instance variables of the DoublyLinkedList
+    /** Sentinel node at the beginning of the list */
+    private Node<E> header;                    // header sentinel
 
-		/* Constructor */
-		public Node(E e, Node<E> p, Node<E> n) {
-			element = e;
-			prev = p;
-			next = n;
+    /** Sentinel node at the end of the list */
+    private Node<E> trailer;                   // trailer sentinel
+
+    /** Number of elements in the list (not including sentinels) */
+    private int size = 0;                      // number of elements in the list
+
+    /** Constructs a new empty list. */
+    public DoublyLinkedList() {
+        // TODO
+    }
+
+    // public accessor methods
+    /**
+     * Returns the number of elements in the linked list.
+     * @return number of elements in the linked list
+     */
+    public int size() { return size; }
+
+    /**
+     * Tests whether the linked list is empty.
+     * @return true if the linked list is empty, false otherwise
+     */
+    public boolean isEmpty() { return size == 0; }
+
+    @Override
+    public E get(int i) throws IndexOutOfBoundsException {
+        return null;
+    }
+
+    @Override
+    public E set(int i, E e) throws IndexOutOfBoundsException {
+        return null;
+    }
+
+    @Override
+    public void add(int i, E e) throws IndexOutOfBoundsException {
+
+    }
+
+    @Override
+    public E remove(int i) throws IndexOutOfBoundsException {
+        return null;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return null;
+    }
+
+    /**
+     * Returns (but does not remove) the first element of the list.
+     * @return element at the front of the list (or null if empty)
+     */
+    public E first() {
+		if (isEmpty())
+			return null;
+		return headerNode.getNext().getElement();
+    }
+
+    /**
+     * Returns (but does not remove) the last element of the list.
+     * @return element at the end of the list (or null if empty)
+     */
+    public E last() {
+		if (isEmpty())
+			return null;
+		return trailerNode.getPrev().getElement();
+    }
+
+    // public update methods
+    /**
+     * Adds an element to the front of the list.
+     * @param e   the new element to add
+     */
+    public void addFirst(E e) {
+		addBetween(e, headerNode, headerNode.getNext());
+    }
+
+    /**
+     * Adds an element to the end of the list.
+     * @param e   the new element to add
+     */
+    public void addLast(E e) {
+		addBetween(e, trailerNode.getPrev(), trailerNode);
+    }
+
+    /**
+     * Removes and returns the first element of the list.
+     * @return the removed element (or null if empty)
+     */
+    public E removeFirst() {
+		if (isEmpty()) {
+			return null;
+		}
+		if (size != 0) {
+			headerNode = headerNode.next;
+			size--;
 		}
 
-		public E getElement() {
-			return element;
-		}
+		return headerNode.getElement();
+    }
 
-		public Node<E> getNext() {
-			return next;
-		}
+    /**
+     * Removes and returns the last element of the list.
+     * @return the removed element (or null if empty)
+     */
+    public E removeLast() {
+		Node<E> toDelete = trailerNode.getPrev();
+		Node<E> predeccesor = toDelete.getPrev();
+		Node<E> successor = toDelete.getNext();
+		predeccesor.setNext(successor);
+		successor.setPrev(predeccesor);
+		size--;
+		return toDelete.getElement();
+    }
 
-		public void setNext(Node<E> n) {
-			next = n;
-		}
-
-		public Node<E> getPrev() {
-			return prev;
-		}
-
-		public void setPrev(Node<E> p) {
-			prev = p;
-		}
-	}
-
-	private void addBetween(E e, Node<E> predecessor, Node<E> successor) {
-		Node<E> newest = new Node<E>(e, predecessor, successor);
+    // private update methods
+    /**
+     * Adds an element to the linked list in between the given nodes.
+     * The given predecessor and successor should be neighboring each
+     * other prior to the call.
+     *
+     * @param predecessor   node just before the location where the new element is inserted
+     * @param successor     node just after the location where the new element is inserted
+     */
+    private void addBetween(E e, Node<E> predecessor, Node<E> successor) {
+ 
+		Node<E> newest = new Node<>(e, predecessor, successor);
 		predecessor.setNext(newest);
 		successor.setPrev(newest);
-	}
+		size++;
+    }
 
-	@Override
-	public int size() {
-		return size;
-	}
+    /**
+     * Removes the given node from the list and returns its element.
+     * @param node    the node to be removed (must not be a sentinel)
+     */
+    private E remove(Node<E> node) {
+		if (headerNode.getNext() == null) {
+			throw new RuntimeException("Cant Delete");
+		}
 
-	@Override
-	public boolean isEmpty() {
-		return size == 0;
-	}
+		Node<E> currNode = headerNode.getNext();
 
-	@Override
-	public E get(int i) {
-		Node<E> get = head;
 		for (int j = 0; j < i; j++) {
-			get = get.getNext();
-		}
-		return get.getElement();
-	}
-
-	@Override
-	public void add(int i, E e) {
-		if (i == 0)
-			addFirst(e);
-		else {
-			Node<E> addIndex = head;
-			for (int j = 0; j < i - 1; j++) {
-				addIndex = addIndex.getNext();
-			}
-			Node<E> newest = new Node<E>(e, addIndex, addIndex.getNext()); // same as singly but we set the prev
-			addIndex.setNext(newest);
-			size++;
-		}
-	}
-
-	@Override
-	public E remove(int i) {
-		Node<E> remove = head;
-		if (i == 0)
-			removeFirst();
-		else {
-			for (int j = 0; j < i; j++) {
-				remove = remove.getNext(); // here we can get the element we want to remove
-			}
-			remove.getPrev().setNext(remove.getNext()); // we can then set its prevs next to the element 2 ahead
-			remove.getNext().setPrev(remove.getPrev()); // we then set the element ahead of removes prev to 2 behind
-		}
-		return remove.getElement();
-	}
-
-	private class ListIterator implements Iterator<E> {
-		Node<E> curr;
-
-		public ListIterator() {
-			curr = head;
+			currNode = currNode.getNext();
 		}
 
-		@Override
-		public boolean hasNext() {
-			return curr != null;
-		}
+		Node<E> predecessor = currNode.getPrev();
+		Node<E> successor = currNode.getNext();
 
-		@Override
-		public E next() {
-			E n = curr.getElement();
-			curr = curr.getNext();
-			return n;
-		}
+		predecessor.setNext(successor);
+		successor.setPrev(predecessor);
 
-	}
-
-	@Override
-	public Iterator<E> iterator() {
-		return new ListIterator();
-	}
-
-	@Override
-	public E removeFirst() {
-		if (isEmpty())
-			return null;
-		Node<E> first = head;
-		if (size == 1) {
-			head = null;
-			size--;
-			return first.getElement();
-		}
-		head = head.getNext();
-		head.setPrev(null); // same as singly linked list but we set the new head prev to null
 		size--;
 
-		return first.getElement();
-	}
+		return currNode.getElement();
+    }
 
-	@Override
-	public E removeLast() {
-		if (isEmpty())
-			return null;
-		Node<E> last = head;
-		while (last.getNext() != null) {
-			last = last.getNext();
-		}
-		last.getPrev().setNext(null); // same as singly linked list but we can use prev to set the second last
-										// elements next to null
-		size--;
-		return last.getElement();
-	}
 
-	@Override
-	public void addFirst(E e) {
-		head = new Node<E>(e, null, head);
-		if (head.getNext() != null) {
-			head.getNext().setPrev(head); // same as singly linked list but we set the prev of old head to new head
-		}
-		size++;
-	}
-
-	@Override
-	public void addLast(E e) {
-		Node<E> newest = new Node<E>(e, null, null);
-		Node<E> last = head;
-		if (last == null) {
-			head = newest;
-		} else {
-			while (last.getNext() != null) {
-				last = last.getNext();
-			}
-			newest.setPrev(last); // same as singly linked list but we set the prev to the old last
-			last.setNext(newest);
-		}
-		size++;
-	}
-
-	public E first() {
-		if (isEmpty())
-			return null;
-		return head.getElement();
-	}
-
-	public E last() {
-		if (isEmpty())
-			return null;
-		Node<E> last = head;
-		while (last.getNext() != null) {
-			last = last.getNext();
-		}
-		return last.getElement();
-	}
-
-}
-
-	public String toString() {
+    /**
+     * Produces a string representation of the contents of the list.
+     * This exists for debugging purposes only.
+     */
+    public String toString() {
 		String result = "[";
-		Node<E> current = head;
-		while (current != null) {
+		Node<E> current = headerNode.getNext();
+		while (current.getNext() != null) {
 			result += current.getElement();
-			if (current.getNext() != null) {
+			if (current.getNext().getNext() != null) {
 				result += ", ";
-
 			}
 			current = current.getNext();
 		}
-		result += "]";
-		return result;
-	}
+		return result + "]";
+    }
 
-	public static void main(String[] args) {
-//		   DoublyLinkedList<Integer> ll = new DoublyLinkedList<Integer>();
-//           ll.addFirst(0);
-//           ll.addFirst(1);
-//           ll.addFirst(2);
-//           ll.addLast(-1);
-//           System.out.println(ll);
-//           
-//           ll.removeFirst();
-//           System.out.println(ll);
-//
-//           ll.remove(1);
-//           System.out.println(ll);
-//           
-//           ll.add(1,-9);
-//           System.out.println(ll);
-//           
-//           ll.addBetween(99, ll.head, ll.head.getNext());
-//           System.out.println(ll);
-//           
-//           for(Integer e: ll) {
-//                   System.out.println("value: " + e);
-//           }
-	}
+    public static void main(String [] args) {
+        //ArrayList<String> all;
+        //LinkedList<String> ll;
+        DoublyLinkedList<String> ll = new DoublyLinkedList<String>();
 
+        String[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+        for (String s : alphabet) {
+            ll.addFirst(s);
+            ll.addLast(s);
+        }
+        System.out.println(ll.toString());
+
+        for (String s : ll) {
+            System.out.print(s + ", ");
+        }
+    }
+} //----------- end of DoublyLinkedList class -----------
